@@ -1,0 +1,21 @@
+<!-- product_scraper/templates/product_scraper/product_detail.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Product Detail</title>
+  </head>
+  <body>
+    <h1>{{ product.name }}</h1>
+    <h2>Price History</h2>
+    <ul>
+      {% for price in price_history %}
+      <li>
+        Flipkart: {{ price.price_flipkart }}, Amazon: {{ price.price_amazon }},
+        Croma: {{ price.price_croma }} ({{ price.scraped_at }})
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

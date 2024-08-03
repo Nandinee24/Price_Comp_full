@@ -1,0 +1,15 @@
+<!-- product_scraper/templates/product_scraper/scrape_form.html -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scrape Form</title>
+  </head>
+  <body>
+    <h1>Enter URL to Scrape</h1>
+    <form method="post">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit">Scrape</button>
+    </form>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+<!-- product_scraper/result.html -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Scraped Product Data</title>
+  </head>
+  <body>
+    <h1>Scraped Product Data</h1>
+    {% if error %}
+    <p>{{ error }}</p>
+    {% else %}
+    <h2>Product Name: {{ products.product_name }}</h2>
+    <p>Flipkart Price: {{ products.flipkart_price }}</p>
+    <p>Amazon Price: {{ products.amazon_price }}</p>
+    <p>Croma Price: {{ products.croma_price }}</p>
+    {% endif %}
+  </body>
+</html>
