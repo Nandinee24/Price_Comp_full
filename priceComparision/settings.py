@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'product_scraper',
     'rest_framework',
     'corsheaders',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -52,10 +53,24 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ],
+}
 
 
 ROOT_URLCONF = 'priceComparision.urls'
