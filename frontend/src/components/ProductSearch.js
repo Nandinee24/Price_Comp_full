@@ -1,8 +1,8 @@
-// src/components/ProductSearch.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import './ProductSearch.css';
 import PriceChart from './PriceChart';
+import ProductDetails from './ProductDetails';
 import { HashLoader } from 'react-spinners';
 
 function ProductSearch() {
@@ -13,11 +13,9 @@ function ProductSearch() {
     const searchProduct = async () => {
         setLoading(true); // Set loading to true when starting the request
         try {
-            // const encodedUrl = encodeURIComponent(productUrl);
             const response = await axios.get('http://localhost:8000/scrape/search/', {
                 params: { product_url: productUrl }
             });
-            // console.log('API response data:', response.data); // Debugging log
             setResult(response.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -45,8 +43,25 @@ function ProductSearch() {
                 ) : result && (
                     <div className="result">
                         <h3>Product Data:</h3>
-                        <p><strong>Product:</strong> {result.product_name}</p>
-                        <PriceChart data={result} />
+                        <p><strong>Product:</strong> {result.product_name || 'Product name not available'}</p>
+                        <div className="container">
+                            <PriceChart data={result} />
+                            {result.image_url && <img src={result.image_url} alt="Product" />}
+                        </div>
+                        <div className="product-data">
+
+                            {result.site_data && result.site_data.map((siteData, index) => (
+
+                                <ProductDetails
+                                    key={index}
+                                    siteName={siteData.site_name}
+                                    offers={siteData.offers}
+                                    rating={siteData.rating}
+                                    price={siteData.price}
+                                    imageUrl={siteData.image_url}
+                                />
+                            ))}
+                        </div>
                     </div>
                 )}
             </div>

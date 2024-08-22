@@ -15,26 +15,42 @@ const PriceChart = ({ data }) => {
             if (chartRef.current) {
                 const chartContext = chartRef.current.getContext('2d');
 
-                // Ensure prices are numbers and provide default value if missing
-                const prices = [
-                    parseFloat(data.flipkart_price.replace(/[^\d.-]/g, '')) || 0,
-                    parseFloat(data.amazon_price.replace(/[^\d.-]/g, '')) || 0,
-                    parseFloat(data.croma_price.replace(/[^\d.-]/g, '')) || 0
-                ];
+                // Extract site names and prices from data.site_data
+                const siteNames = [];
+                const prices = [];
 
-                console.log('Parsed Prices:', prices); // Debugging log
+                if (data && data.site_data) {
+                    data.site_data.forEach((site) => {
+                        siteNames.push(site.site_name || 'Unknown Site');
+                        const price = site.price || '0';
+                        prices.push(parseFloat(price.replace(/[^\d.-]/g, '')) || 0);
+                    });
+                } else {
+                    console.error('Data or site_data is not available');
+                }
+
+                // Destroy previous chart instance if it exists
+                if (chartInstanceRef.current) {
+                    chartInstanceRef.current.destroy();
+                }
 
                 chartInstanceRef.current = new Chart(chartContext, {
                     type: 'bar',
                     data: {
-                        labels: ['Flipkart', 'Amazon', 'Croma'],
+                        labels: siteNames,
                         datasets: [
                             {
                                 label: 'Price in INR',
                                 data: prices,
-                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                                hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
-                                barThickness: 40, // Set the bar thickness
+                                backgroundColor: siteNames.map((_, index) => {
+                                    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+                                    return colors[index % colors.length];
+                                }),
+                                hoverBackgroundColor: siteNames.map((_, index) => {
+                                    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+                                    return colors[index % colors.length];
+                                }),
+                                barThickness: 40,
                             },
                         ],
                     },
@@ -45,26 +61,26 @@ const PriceChart = ({ data }) => {
                             datalabels: {
                                 anchor: 'end',
                                 align: 'top',
-                                formatter: (value) => value.toLocaleString(), // Display price with commas
+                                formatter: (value) => value.toLocaleString(),
                                 font: {
                                     family: 'Montserrat',
                                     weight: 'bold',
                                 },
                                 color: 'white',
-                                offset: 5, // Increase offset to avoid overlap
+                                offset: 5,
                             },
                         },
-
-
                         scales: {
                             x: {
                                 type: 'category',
+                                ticks: {
+                                    autoSkip: false, // Ensure all labels are shown
+                                },
                             },
                             y: {
-                                beginAtZero: true, // Ensure the y-axis starts at zero
+                                beginAtZero: true,
                                 ticks: {
                                     stepSize: 100,
-                                    // Set step size for Y-axis ticks
                                 },
                             }
                         },
@@ -72,10 +88,6 @@ const PriceChart = ({ data }) => {
                 });
             }
         };
-
-        if (chartInstanceRef.current) {
-            chartInstanceRef.current.destroy();
-        }
 
         createChart();
 

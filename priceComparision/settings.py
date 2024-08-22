@@ -77,7 +77,7 @@ ROOT_URLCONF = 'priceComparision.urls'
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend/build/static'),  # Adjust the path to your React build directory
 ]
@@ -109,8 +109,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [BASE_DIR / 'static']
 
 WSGI_APPLICATION = 'priceComparision.wsgi.application'
 
